@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="План поездки по дням, расходы и список вещей." />
+    <title>Путевод — планировщик поездок</title>
+    <link rel="stylesheet" href="./src/styles.css" />
+    <script type="module" src="./src/js/app.js"></script>
+  </head>
+  <body>
+    <a class="page__skip" href="#main">К плану поездки</a>
+    <header class="page__header">
+      <a class="page__brand" href="./">Путевод</a>
+      <span>Планировщик поездок</span>
+      <button class="text-button" data-action="help">Как пользоваться</button>
+    </header>
+    <div class="page__layout">
+      <aside class="sidebar">
+        <h2>
+          Мои поездки
+          <span id="trip-count">0</span>
+        </h2>
+        <nav id="trip-list" class="trip-list" aria-label="Мои поездки"></nav>
+        <button class="button button--primary sidebar__add" data-action="new-trip">+ Новая поездка</button>
+      </aside>
+      <main id="main" class="page__main">
+        <p class="page__toolbar">
+          Поездки /
+          <span id="breadcrumb-city"></span>
+        </p>
+        <p id="storage-warning" class="notice" role="alert" hidden></p>
+        <section id="empty-workspace" class="empty" hidden>
+          <h1>Пока нет поездок</h1>
+          <p>Создайте поездку и составьте план по дням.</p>
+          <button class="button button--primary" data-action="new-trip">Создать поездку</button>
+        </section>
+        <div id="workspace" hidden>
+          <section class="trip" aria-labelledby="trip-title">
+            <div>
+              <h1 id="trip-title"></h1>
+              <p id="trip-destination"></p>
+              <p id="trip-meta" class="muted"></p>
+            </div>
+            <div class="trip__actions">
+              <button class="button" data-action="edit-trip">Изменить поездку</button>
+              <button class="text-button text-button--danger" data-action="delete-trip">Удалить</button>
+            </div>
+          </section>
+          <div class="tabs" role="tablist" aria-label="Разделы поездки">
+            <button
+              id="tab-plan"
+              class="tabs__button"
+              role="tab"
+              aria-selected="true"
+              aria-controls="view-plan"
+              data-action="tab"
+              data-id="plan"
+            >
+              План по дням
+            </button>
+            <button
+              id="tab-budget"
+              class="tabs__button"
+              role="tab"
+              aria-selected="false"
+              aria-controls="view-budget"
+              tabindex="-1"
+              data-action="tab"
+              data-id="budget"
+            >
+              Бюджет
+            </button>
+            <button
+              id="tab-packing"
+              class="tabs__button"
+              role="tab"
+              aria-selected="false"
+              aria-controls="view-packing"
+              tabindex="-1"
+              data-action="tab"
+              data-id="packing"
+            >
+              Список вещей
+            </button>
+          </div>
+          <div class="page__columns">
+            <div>
+              <section id="view-plan" role="tabpanel" aria-labelledby="tab-plan">
+                <div id="day-tabs" class="days" aria-label="Дни поездки"></div>
+                <div class="section-heading">
+                  <div>
+                    <h2 id="day-title"></h2>
+                    <p id="day-summary" class="muted"></p>
+                  </div>
+                  <button class="button button--primary" data-action="add-activity">+ Добавить место</button>
+                </div>
+                <div id="activities"></div>
+                <p id="day-total" class="plan__total"></p>
+                <div class="notes">
+                  <label for="trip-notes">Заметки к поездке</label>
+                  <textarea
+                    id="trip-notes"
+                    maxlength="4000"
+                    rows="3"
+                    placeholder="Например, адрес гостиницы"
+                  ></textarea>
+                </div>
+              </section>
+              <section id="view-budget" role="tabpanel" aria-labelledby="tab-budget" hidden>
+                <div class="section-heading">
+                  <h2>Расходы поездки</h2>
+                  <button class="button button--primary" data-action="add-expense">+ Добавить расход</button>
+                </div>
+                <p id="budget-summary"></p>
+                <p class="muted">Стоимость мест из плана уже включена в общую сумму. Все суммы указаны на группу.</p>
+                <h3>Дополнительные расходы</h3>
+                <div id="expense-list" class="panel"></div>
+              </section>
+              <section id="view-packing" role="tabpanel" aria-labelledby="tab-packing" hidden>
+                <h2>Список вещей</h2>
+                <p id="packing-count" class="muted"></p>
+                <form id="packing-form" class="packing__form">
+                  <input
+                    name="title"
+                    required
+                    maxlength="140"
+                    aria-label="Название вещи"
+                    placeholder="Например, зарядное устройство"
+                  />
+                  <button class="button button--primary" type="submit">Добавить</button>
+                </form>
+                <div id="packing-list" class="panel"></div>
+              </section>
+            </div>
+            <aside class="page__summary" aria-label="Сводка поездки">
+              <section class="panel budget">
+                <h2>Бюджет поездки</h2>
+                <strong id="budget-total" class="budget__total"></strong>
+                <p class="muted">
+                  из
+                  <span id="budget-limit"></span>
+                  запланировано
+                </p>
+                <p id="budget-left"></p>
+              </section>
+              <section class="panel weather">
+                <div class="section-heading">
+                  <h2>Погода на день</h2>
+                  <button class="text-button" data-action="weather">Обновить</button>
+                </div>
+                <div id="weather" aria-live="polite"></div>
+                <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a>
+              </section>
+            </aside>
+          </div>
+        </div>
+        <footer class="page__footer">Путевод · 2026</footer>
+      </main>
+    </div>
+
+    <dialog id="trip-dialog" class="dialog" aria-labelledby="trip-dialog-title">
+      <div class="dialog__heading">
+        <h2 id="trip-dialog-title">Новая поездка</h2>
+        <button class="dialog__close" data-action="close" data-id="trip-dialog" aria-label="Закрыть диалог">×</button>
+      </div>
+      <form id="trip-form">
+        <label for="trip-name">Название поездки</label>
+        <input id="trip-name" name="title" required maxlength="100" placeholder="Например, выходные в Казани" />
+        <label for="city-search">Город назначения</label>
+        <div class="search__row">
+          <input id="city-search" name="city" required maxlength="100" placeholder="Введите город" />
+          <button id="search-city" class="button" type="button" data-action="search-city">Найти</button>
+        </div>
+        <div id="city-results" class="search__results" aria-live="polite"></div>
+        <p id="city-selection" class="muted"></p>
+        <div class="form__grid">
+          <div>
+            <label for="trip-start">Начало</label>
+            <input id="trip-start" name="start" type="date" required min="2000-01-01" max="2100-12-31" />
+          </div>
+          <div>
+            <label for="trip-end">Окончание</label>
+            <input id="trip-end" name="end" type="date" required min="2000-01-01" max="2100-12-31" />
+          </div>
+          <div>
+            <label for="trip-travelers">Путешественников</label>
+            <input id="trip-travelers" name="travelers" type="number" min="1" max="50" step="1" required />
+          </div>
+          <div>
+            <label for="trip-budget">Бюджет группы, ₽</label>
+            <input id="trip-budget" name="budget" type="number" min="0" max="100000000" step="0.01" required />
+          </div>
+        </div>
+        <p class="form__error" role="alert" hidden></p>
+        <div class="dialog__actions">
+          <button class="button" type="button" data-action="close" data-id="trip-dialog">Отмена</button>
+          <button id="trip-submit" class="button button--primary" type="submit">Создать поездку</button>
+        </div>
+      </form>
+    </dialog>
+    <dialog id="activity-dialog" class="dialog" aria-labelledby="activity-dialog-title">
+      <div class="dialog__heading">
+        <h2 id="activity-dialog-title">Добавить место</h2>
+        <button class="dialog__close" data-action="close" data-id="activity-dialog" aria-label="Закрыть диалог">
+          ×
+        </button>
+      </div>
+      <form id="activity-form">
+        <label for="activity-title">Название места или занятия</label>
+        <input
+          id="activity-title"
+          name="title"
+          required
+          maxlength="140"
+          placeholder="Например, прогулка по набережной"
+        />
+        <div class="form__grid">
+          <div>
+            <label for="activity-hour">Начало (24 часа)</label>
+            <div class="form__time">
+              <select id="activity-hour" name="hour" aria-label="Часы начала"></select>
+              <span aria-hidden="true">:</span>
+              <select id="activity-minute" name="minute" aria-label="Минуты начала"></select>
+            </div>
+          </div>
+        </div>
+        <label for="activity-cost">Стоимость на всю группу, ₽</label>
+        <input id="activity-cost" name="cost" type="number" required min="0" max="100000000" step="0.01" />
+        <p class="form__error" role="alert" hidden></p>
+        <div class="dialog__actions">
+          <button class="button" type="button" data-action="close" data-id="activity-dialog">Отмена</button>
+          <button class="button button--primary" type="submit">Сохранить место</button>
+        </div>
+      </form>
+    </dialog>
+    <dialog id="expense-dialog" class="dialog" aria-labelledby="expense-dialog-title">
+      <div class="dialog__heading">
+        <h2 id="expense-dialog-title">Добавить расход</h2>
+        <button class="dialog__close" data-action="close" data-id="expense-dialog" aria-label="Закрыть диалог">
+          ×
+        </button>
+      </div>
+      <form id="expense-form">
+        <label for="expense-title">Название</label>
+        <input id="expense-title" name="title" required maxlength="140" placeholder="Например, билеты на поезд" />
+        <label for="expense-cost">Сумма на всю группу, ₽</label>
+        <input id="expense-cost" name="cost" type="number" min="0" max="100000000" step="0.01" required />
+        <p class="form__error" role="alert" hidden></p>
+        <div class="dialog__actions">
+          <button class="button" type="button" data-action="close" data-id="expense-dialog">Отмена</button>
+          <button class="button button--primary" type="submit">Сохранить расход</button>
+        </div>
+      </form>
+    </dialog>
+    <dialog id="help-dialog" class="dialog" aria-labelledby="help-title">
+      <div class="dialog__heading">
+        <h2 id="help-title">Как пользоваться</h2>
+        <button class="dialog__close" data-action="close" data-id="help-dialog" aria-label="Закрыть диалог">×</button>
+      </div>
+      <ol class="help">
+        <li>Создайте поездку и выберите город из поиска.</li>
+        <li>Добавьте места в план нужного дня.</li>
+        <li>Укажите дополнительные расходы в разделе бюджета.</li>
+        <li>Добавьте вещи и отмечайте собранные.</li>
+      </ol>
+    </dialog>
+    <noscript>Для работы планировщика включите JavaScript.</noscript>
+  </body>
+</html>

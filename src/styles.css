@@ -1,0 +1,354 @@
+/* Общие элементы */
+:root {
+  font:
+    14px Arial,
+    sans-serif;
+  color: #28333c;
+  background: #f4f5f7;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+h1 {
+  font-size: 25px;
+}
+h2 {
+  font-size: 18px;
+}
+h3 {
+  font-size: 15px;
+}
+p {
+  line-height: 1.6;
+}
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+button {
+  cursor: pointer;
+  padding: 9px 13px;
+  border: 1px solid #b9c3cc;
+  background: #fff;
+}
+a,
+.text-button {
+  color: #2e608d;
+}
+[hidden] {
+  display: none !important;
+}
+:focus-visible {
+  outline: 2px solid #286ba5;
+}
+.muted,
+.page__toolbar,
+small,
+.page__footer {
+  color: #626c75;
+  font-size: 13px;
+}
+.button--primary {
+  background: #356b9b;
+  color: #fff;
+}
+.text-button {
+  padding: 4px 0;
+  border: 0;
+  background: none;
+  text-decoration: underline;
+}
+.text-button--danger,
+.budget__over {
+  color: #a23b32;
+}
+.panel,
+.activity,
+.trip,
+.empty {
+  padding: 16px;
+  background: #fff;
+  border: 1px solid #d8dde3;
+}
+.notice,
+.form__error {
+  margin: 12px 0;
+  padding: 12px;
+  background: #fff1ef;
+  color: #8b2921;
+}
+
+/* Страница, классы по БЭМ */
+.page__header,
+.trip,
+.trip__actions,
+.tabs,
+.days,
+.section-heading,
+.activity__heading,
+.activity__actions,
+.expense,
+.packing__item,
+.packing__form,
+.dialog__heading,
+.dialog__actions,
+.form__time,
+.search__row {
+  display: flex;
+  gap: 12px;
+}
+.page__header {
+  align-items: center;
+  padding: 16px 32px;
+  background: #fff;
+}
+.page__brand {
+  font-size: 22px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #28333c;
+}
+.page__header > button {
+  margin-left: auto;
+}
+.page__layout {
+  display: grid;
+  grid-template-columns: 215px minmax(0, 1fr);
+  max-width: 1440px;
+  margin: auto;
+}
+.page__main {
+  padding: 24px 30px;
+  min-width: 0;
+}
+.page__toolbar {
+  margin-bottom: 20px;
+}
+.sidebar {
+  padding: 26px 18px;
+  background: #fafbfc;
+  border-right: 1px solid #d8dde3;
+}
+.sidebar h2 {
+  font-size: 15px;
+  margin-bottom: 18px;
+}
+.sidebar__add {
+  width: 100%;
+  margin-top: 14px;
+}
+.trip-list,
+.page__summary {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+}
+.trip-list__item {
+  text-align: left;
+  background: transparent;
+  border: 0;
+  overflow-wrap: anywhere;
+}
+small {
+  display: block;
+  margin-top: 5px;
+}
+.trip-list__item--active,
+.days__button--active {
+  background: #e8eff6;
+}
+.trip,
+.section-heading,
+.activity__heading,
+.packing__item,
+.dialog__heading {
+  justify-content: space-between;
+}
+.trip__actions {
+  flex-direction: column;
+  align-items: flex-end;
+}
+.tabs {
+  margin: 24px 0;
+  border-bottom: 1px solid #d8dde3;
+}
+.tabs__button {
+  background: none;
+  border: 0;
+  padding: 10px 0;
+}
+.tabs__button[aria-selected="true"] {
+  color: #2e608d;
+  border-bottom: 2px solid #356b9b;
+}
+.page__columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 230px;
+  gap: 22px;
+}
+.page__footer {
+  margin-top: 36px;
+}
+.page__skip {
+  position: fixed;
+  top: -50px;
+  left: 12px;
+}
+.page__skip:focus {
+  top: 10px;
+  background: #fff;
+}
+
+/* План и расходы */
+.days {
+  overflow-x: auto;
+  padding-bottom: 12px;
+}
+.days__button {
+  flex-shrink: 0;
+}
+.activity {
+  margin: 12px 0;
+}
+.activity__actions,
+.expense,
+.packing__item {
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 10px;
+}
+.activity--done h3 {
+  text-decoration: line-through;
+}
+.plan__total {
+  margin: 16px 0;
+}
+.notes {
+  margin-top: 24px;
+}
+.budget h2,
+.weather h2 {
+  font-size: 15px;
+}
+.budget__total,
+.weather__temperature {
+  display: block;
+  font-size: 24px;
+  margin: 12px 0;
+}
+.weather > a {
+  display: inline-block;
+  margin-top: 12px;
+}
+#view-budget h3 {
+  margin: 20px 0 12px;
+}
+.expense > div,
+.packing__item label {
+  flex: 1;
+  overflow-wrap: anywhere;
+}
+.packing__form {
+  margin: 20px 0;
+}
+
+/* Формы */
+input:not([type="checkbox"]),
+select,
+textarea {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid #b9c3cc;
+  padding: 10px;
+  background: #fff;
+}
+textarea {
+  resize: vertical;
+}
+form > label,
+.form__grid label,
+.notes > label {
+  display: block;
+  font-weight: bold;
+  margin: 15px 0 7px;
+}
+.dialog {
+  width: 560px;
+  max-width: calc(100% - 24px);
+  max-height: calc(100dvh - 32px);
+  padding: 24px;
+  border: 1px solid #bec9d3;
+}
+.dialog::backdrop {
+  background: #25313d70;
+}
+.dialog__close {
+  padding: 0;
+  background: none;
+  border: 0;
+  font-size: 26px;
+}
+.dialog__actions {
+  justify-content: flex-end;
+  margin-top: 22px;
+}
+.form__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 16px;
+}
+.form__time {
+  align-items: center;
+}
+.search__results {
+  margin-top: 8px;
+}
+.search__results button {
+  width: 100%;
+  text-align: left;
+}
+.help {
+  line-height: 1.8;
+}
+
+/* Адаптация к телефону */
+@media (max-width: 1050px) {
+  .page__columns {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 720px) {
+  .page__layout,
+  .form__grid {
+    grid-template-columns: 1fr;
+  }
+  .page__header > span {
+    display: none;
+  }
+  .page__main,
+  .page__header,
+  .sidebar {
+    padding: 16px;
+  }
+  .trip {
+    flex-direction: column;
+  }
+  .trip__actions {
+    flex-direction: row;
+    align-items: center;
+  }
+  .section-heading {
+    flex-wrap: wrap;
+  }
+}
